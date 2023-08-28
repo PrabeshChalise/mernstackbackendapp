@@ -1,0 +1,45 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Product</title>
+  </head>
+  <body>
+    <form id="addProductForm">
+      <input type="file" name="image" />
+      <input type="text" name="name" placeholder="Name" />
+      <input type="text" name="category" placeholder="Category" />
+      <input type="number" name="quantity" placeholder="Quantity" />
+      <input type="number" name="pricePerPiece" placeholder="Price per Piece" />
+
+      <button type="submit">Add Product</button>
+    </form>
+
+    <script>
+      document
+        .getElementById("addProductForm")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const formData = new FormData(event.target);
+
+          try {
+            const response = await fetch("/api/products", {
+              method: "POST",
+              body: formData,
+            });
+
+            if (response.ok) {
+              const product = await response.json();
+              console.log("Product added:", product);
+              // You can add logic here to refresh the product list or update the UI
+              // For example, if you have a product list on the page, you could reload it.
+            } else {
+              console.error("Error adding product:", response.statusText);
+            }
+          } catch (error) {
+            console.error("Error:", error);
+          }
+        });
+    </script>
+  </body>
+</html>
